@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FCF80C643090420B00D676AA /* OpenRouter in Frameworks */ = {isa = PBXBuildFile; productRef = FCF80C633090420B00D676AA /* OpenRouter */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		FCF80C3430903F6700D676AA /* chatgpt-rapper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "chatgpt-rapper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCF80C643090420B00D676AA /* OpenRouter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = "chatgpt-rapper";
 			packageProductDependencies = (
+				FCF80C633090420B00D676AA /* OpenRouter */,
 			);
 			productName = "chatgpt-rapper";
 			productReference = FCF80C3430903F6700D676AA /* chatgpt-rapper.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = FCF80C2B30903F6700D676AA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FCF80C623090420B00D676AA /* XCLocalSwiftPackageReference "Packages/swift-openrouter" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FCF80C3530903F6700D676AA /* Products */;
 			projectDirPath = "";
@@ -339,6 +348,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		FCF80C623090420B00D676AA /* XCLocalSwiftPackageReference "Packages/swift-openrouter" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "Packages/swift-openrouter";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FCF80C633090420B00D676AA /* OpenRouter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FCF80C623090420B00D676AA /* XCLocalSwiftPackageReference "Packages/swift-openrouter" */;
+			productName = OpenRouter;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FCF80C2C30903F6700D676AA /* Project object */;
 }
