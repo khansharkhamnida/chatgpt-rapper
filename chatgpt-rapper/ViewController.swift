@@ -239,10 +239,13 @@ final class ViewController: UIViewController {
     @objc
     private func avatarTapped() {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        let origin = headerAvatar.convert(CGPoint(x: headerAvatar.bounds.midX, y: headerAvatar.bounds.midY), to: view)
-        let emojis = ["🦅", "🎀", "✨", "🍒", "💖", "🎤", "🌸", "⭐️"]
+        burst(emojis: ["🦅", "🎀", "✨", "🍒", "💖", "🎤", "🌸", "⭐️"])
+    }
 
-        for i in 0..<16 {
+    private func burst(emojis: [String], count: Int = 16) {
+        let origin = headerAvatar.convert(CGPoint(x: headerAvatar.bounds.midX, y: headerAvatar.bounds.midY), to: view)
+
+        for i in 0..<count {
             let label = UILabel()
             label.text = emojis[i % emojis.count]
             label.font = .systemFont(ofSize: CGFloat.random(in: 22...34))
@@ -345,6 +348,40 @@ final class ViewController: UIViewController {
         present(nav, animated: true)
     }
 
+    // The user said what they are: new avatar and bubble colour, a confetti burst, and Dahyun reacts.
+    private func transform(into creature: Creature) {
+        Creature.current = creature
+        chatService.creatureJustRevealed = creature.name != "human"
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        tableView.reloadData()
+        burst(emojis: [creature.emoji, "✨", "💫", creature.emoji, "🌟"], count: 24)
+        showToast("✨ you are now \(creature.name == "human" ? "a human again" : "a \(creature.name)") \(creature.emoji) ✨")
+    }
+
+    private func showToast(_ text: String) {
+        let label = PaddedLabel()
+        label.text = text
+        label.font = Theme.font(.subheadline, weight: .bold)
+        label.textColor = .white
+        label.backgroundColor = Theme.cherry
+        label.layer.cornerRadius = 16
+        label.clipsToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.alpha = 0
+        view.addSubview(label)
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            label.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 8),
+        ])
+        UIView.animate(withDuration: 0.3, animations: { label.alpha = 1 }) { _ in
+            UIView.animate(withDuration: 0.4, delay: 2.2, options: []) {
+                label.alpha = 0
+            } completion: { _ in
+                label.removeFromSuperview()
+            }
+        }
+    }
+
     @objc
     private func newChatTapped() {
         speaker.stop()
@@ -371,6 +408,7 @@ final class ViewController: UIViewController {
               !prompt.isEmpty, sendButton.isEnabled else { return }
 
         promptField.text = ""
+        if let creature = Creature.detect(in: prompt), creature != Creature.current { transform(into: creature) }
         speaker.stop()
         setDancing(true)
         sendButton.isEnabled = false
@@ -436,5 +474,16 @@ extension ViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ChatBubbleCell.reuseID, for: indexPath) as! ChatBubbleCell
         cell.configure(with: messages[indexPath.row])
         return cell
+    }
+}
+
+private final class PaddedLabel: UILabel {
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: rect.inset(by: UIEdgeInsets(top: 6, left: 14, bottom: 6, right: 14)))
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        return CGSize(width: size.width + 28, height: size.height + 12)
     }
 }

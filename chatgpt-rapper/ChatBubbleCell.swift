@@ -30,6 +30,11 @@ final class AvatarView: UIView {
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    func update(emoji: String, background: UIColor) {
+        label.text = emoji
+        backgroundColor = background
+    }
 }
 
 final class ChatBubbleCell: UITableViewCell {
@@ -92,7 +97,9 @@ final class ChatBubbleCell: UITableViewCell {
         // The corner next to the avatar stays sharp, like a speech tail.
         if message.isUser {
             NSLayoutConstraint.activate(userConstraints)
-            bubble.backgroundColor = Theme.blush
+            let tint = Creature.current?.tint ?? Theme.blush
+            userAvatar.update(emoji: Creature.current?.emoji ?? "🍒", background: tint)
+            bubble.backgroundColor = tint
             bubble.layer.borderColor = Theme.cherry.cgColor
             bubble.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMinYCorner]
         } else {

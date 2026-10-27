@@ -18,6 +18,15 @@ An iOS chatbot that replies in playful rap bars, powered by [OpenRouter](https:/
 - **Forgetting:** say "forget my cat", swipe a fact away in the 🧠 screen, or tap **forget all**.
 - **Personalised prompt bubbles:** the chips above the input change to match what she knows about you.
 
+**Creature transformations**
+- Say what you are, for example "i'm a mermaid", "im an alien", "i turned into a cat" or "call me a unicorn", and the app changes:
+  - Your avatar becomes that creature's emoji (🧜‍♀️, 👽, 🐱, 🦄).
+  - Your bubbles get a colour for that creature.
+  - An emoji burst and a "✨ you are now a mermaid ✨" banner appear.
+  - Dahyun reacts with surprise, then uses creature puns and imagery in every reply.
+- About 80 creatures are supported, including humans, aliens, mermaids, fairies, dragons, robots and lots of animals. Say "i'm a human" to change back.
+- It's remembered after relaunch. **forget all** in 🧠 resets it.
+
 **Voice and fun**
 - Replies are spoken with Apple's built-in speech, one bar at a time. Emojis are skipped, not read out.
 - 🔊 button to mute, and tap any of her bubbles to hear it again.
@@ -81,6 +90,7 @@ Environment variables only exist when you run from Xcode. A build installed on i
 | "what's my name?" | She answers with your name |
 | "actually call me Mia" | Memory switches to Mia |
 | "forget my cat" | The cat fact is removed |
+| "i'm a mermaid" | Your avatar turns into 🧜‍♀️, a banner and emoji burst appear, and she raps about it |
 | Tap 🧠 | See, swipe-delete or **forget all** |
 | Tap the 🦅 avatar | Confetti |
 
@@ -94,6 +104,7 @@ Environment variables only exist when you run from Xcode. A build installed on i
 | [`RapperSpeaker.swift`](chatgpt-rapper/RapperSpeaker.swift) | Text-to-speech with Apple's `AVSpeechSynthesizer`; picks the best installed voice and strips emoji |
 | [`ChatBubbleCell.swift`](chatgpt-rapper/ChatBubbleCell.swift) | Message bubble cell, avatars and the `BubbleMessage` model |
 | [`MemoryViewController.swift`](chatgpt-rapper/MemoryViewController.swift) | The 🧠 screen that lists, deletes or wipes memories |
+| [`Creature.swift`](chatgpt-rapper/Creature.swift) | The creature list and the "i'm a …" detection |
 | [`Theme.swift`](chatgpt-rapper/Theme.swift) | Colours and rounded fonts |
 | [`Packages/swift-openrouter`](Packages/swift-openrouter) | Local copy of the [OpenRouter Swift package](https://github.com/telip007/swift-openrouter) (see below) |
 
@@ -112,6 +123,10 @@ Model names are `provider/model`. Pick one your key is allowed to use.
 ### Change her personality
 
 Edit `systemPrompt` in [`RapperChatService.swift`](chatgpt-rapper/RapperChatService.swift). Raise or lower `temperature` (currently `0.9`) in `respond(to:)` for more or less creative replies.
+
+### Add more creatures
+
+Add a `("name", "emoji")` pair to the `pairs` list in [`Creature.swift`](chatgpt-rapper/Creature.swift).
 
 ### Change the look
 
